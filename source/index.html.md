@@ -1,15 +1,8 @@
 ---
-title: API Reference
+title: Eagle API
 
 language_tabs:
-  - shell
-  - ruby
-  - python
-  - javascript
-
-toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
-  - <a href='https://github.com/tripit/slate'>Documentation Powered by Slate</a>
+  - cURL
 
 includes:
   - errors
@@ -19,171 +12,567 @@ search: true
 
 # Introduction
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+Welcome to the Eagle API. This API documentation is created to ease and breeze the communication and process of development team.
 
-We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
+This API documentation should be used internally within Eagle development team only. So it is restricted to expose this API documentation to public.
 
-This example API documentation page was created with [Slate](https://github.com/tripit/slate). Feel free to edit it and use it as a base for your own API's documentation.
+The API can be access via:
+
+`https://api.eagle.com/v1`
+
+`Authorization: Bearer YOUR_API_TOKEN`
 
 # Authentication
 
-> To authorize, use this code:
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-```
+## Register via Email
 
 ```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-```
-
-> Make sure to replace `meowmeowmeow` with your API key.
-
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
-
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
-
-`Authorization: meowmeowmeow`
-
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
-
-# Kittens
-
-## Get All Kittens
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
-
-```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let kittens = api.kittens.get();
-```
-
-> The above command returns JSON structured like this:
-
-```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
-  }
-]
-```
-
-This endpoint retrieves all kittens.
-
-### HTTP Request
-
-`GET http://example.com/api/kittens`
-
-### Query Parameters
-
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
-
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-
-## Get a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
+curl
+  -H "Content-Type: application/json"
+  -X POST
+  -d '{"email", "nik@eagle.com", "password": "12345678"}'
+  ENDPOINT
 ```
 
 > The above command returns JSON structured like this:
 
 ```json
 {
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
+  "status": true,
+  "message": "You have successfully registered.",
+  "auth_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9",
+  "user": {
+    "id": 17,
+    "email": "nik@eagle.com",
+    "created_at": "2017-01-08T11:19:42.776+08:00",
+    "updated_at": "2017-01-08T11:19:42.790+08:00",
+    "is_admin": false,
+    "is_super_admin": false,
+    "pass_code": "1234"
+  }
 }
 ```
 
-This endpoint retrieves a specific kitten.
-
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
+This endpoint to sign up new user via email.
 
 ### HTTP Request
 
-`GET http://example.com/kittens/<ID>`
+`POST /signup`
 
-### URL Parameters
+### Data Parameters
 
 Parameter | Description
---------- | -----------
-ID | The ID of the kitten to retrieve
+--------- | ------- | -----------
+email | User email.
+password | User password. Minimum length is 8 characters.
 
+## Login via Email
+
+```shell
+curl
+  -H "Content-Type: application/json"
+  -X POST
+  -d '{"email": "nik@eagle.com", "password": "12345678"}'
+  ENDPOINT
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+  "status": true,
+  "message": "You have successfully registered.",
+  "auth_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9",
+  "user": {
+    "id": 17,
+    "email": "nik@eagle.com",
+    "created_at": "2017-01-08T11:19:42.776+08:00",
+    "updated_at": "2017-01-08T11:19:42.790+08:00",
+    "is_admin": false,
+    "is_super_admin": false,
+    "pass_code": "1234"
+  }
+}
+```
+
+This endpoint to sign in existing user.
+
+### HTTP Request
+
+`POST /signin`
+
+### Data Parameters
+
+Parameter | Description
+--------- | ------- | -----------
+email | User email.
+password | User password. Minimum length is 8 characters.
+
+## Logout
+
+```shell
+curl
+  -H "Authorization: Bearer <token>"
+  -H "Content-Type: application/json"
+  -X DELETE
+  -d '{"id": 17}'
+  ENDPOINT
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+  "status": true,
+  "message": "Logout successfully"
+}
+```
+
+This endpoint to sign out user.
+
+### HTTP Request
+
+`DELETE /account`
+
+### Data Parameters
+
+Parameter | Description
+--------- | ------- | -----------
+id | User id.
+
+<!-- ========== SURVEY ========== -->
+
+# Survey
+
+## Get all survey
+
+```shell
+curl
+  -H "Authorization: Bearer <token>"
+  -H "Content-Type: application/json"
+  -X GET
+  ENDPOINT
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+    "status": true,
+    "message": "Survey successfully retrieved",
+    "surveys": {
+        "id": 1,
+        "questionnaire": [
+            {
+                "id": 1,
+                "question": "This is the first question statement",
+                "type": 1
+            },
+            {
+                "id": 2,
+                "question": "This is the second question statement",
+                "type": 2
+            },
+            {
+                "id": 3,
+                "question": "This is the third question statement",
+                "type": 3
+            }
+        ]
+    }
+}
+```
+
+This endpoint to sign up new user via email.
+
+### HTTP Request
+
+`GET /surveys`
+
+## Get single survey
+
+```shell
+curl
+  -H "Authorization: Bearer <token>"
+  -H "Content-Type: application/json"
+  -X GET
+  ENDPOINT
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+    "status": true,
+    "message": "Survey successfully retrieved",
+    "surveys": {
+        "id": 1,
+        "questionnaire": {
+            "id": 1,
+            "question": "This is the first question statement",
+            "type": 1
+        }
+    }
+}
+```
+
+This endpoint to sign up new user via email.
+
+### HTTP Request
+
+`GET /surveys/<id>`
+
+## Submit all surveys
+
+```shell
+curl
+  -H "Authorization: Bearer <token>"
+  -H "Content-Type: application/json"
+  -X GET
+  ENDPOINT
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+    "status": true,
+    "message": "Successfully submitted surveys",
+    "surveys": [
+        {
+            "id": 1,
+            "questionnaire": [
+                {
+                    "id": 1,
+                    "answer": 1
+                },
+                {
+                    "id": 2,
+                    "answer": 2
+                },
+                {
+                    "id": 3,
+                    "answer": 3
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "questionnaire": [
+                {
+                    "id": 1,
+                    "answer": 1
+                },
+                {
+                    "id": 2,
+                    "answer": 2
+                },
+                {
+                    "id": 3,
+                    "answer": 3
+                }
+            ]
+        }
+    ]
+}
+```
+
+This endpoint to sign up new user via email.
+
+### HTTP Request
+
+`POST /user/<id>/surveys`
+
+<!-- SITUATION REPORT -->
+
+# Situation Report
+
+## Get all SitRep
+
+```shell
+curl
+  -H "Authorization: Bearer <token>"
+  -H "Content-Type: application/json"
+  -X GET
+  ENDPOINT
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+    "status": true,
+    "message": "Situation reports successfully retrieved",
+    "reports": [
+        {
+            "id": 1,
+            "title": "Accident happened at KLCC",
+            "description": "It happened between Honda CRV and Lorry. 2 dead bodies found, 5 serious injured.",
+            "address": "Kuala Lumpur Convention Center",
+            "latitude": 3.075213,
+            "longitude": 101.6469241,
+            "media": {
+                "image": [
+                    {
+                        "url": "http://.../image1.jpg"
+                    },
+                    {
+                        "url": "http://.../image2.jpg"
+                    },
+                    {
+                        "url": "http://.../image3.jpg"
+                    }
+                ],
+                "video": {
+                    "url": "http://.../video.mp4"
+                },
+                "audio": {
+                    "url": "http://.../audio.mp3"
+                }
+            }
+        },
+        {
+            "id": 2,
+            "title": "Loop hole at Old Klang Road",
+            "description": "Big loop hole nearby KFC Old Klang Road.",
+            "address": "KFC Old Klang Road",
+            "latitude": 3.075213,
+            "longitude": 101.6469241,
+            "media": {
+                "image": [
+                    {
+                        "url": "http://.../image1.jpg"
+                    },
+                    {
+                        "url": "http://.../image2.jpg"
+                    },
+                    {
+                        "url": "http://.../image3.jpg"
+                    }
+                ],
+                "video": {
+                    "url": "http://.../video.mp4"
+                },
+                "audio": {
+                    "url": "http://.../audio.mp3"
+                }
+            }
+        }
+    ]
+}
+```
+
+This endpoint to sign up new user via email.
+
+### HTTP Request
+
+`GET /reports`
+
+## Create new SitRep
+
+```shell
+curl
+  -H "Authorization: Bearer <token>"
+  -H "Content-Type: application/json"
+  -X POST
+  -d '{"title":"Accident happened at KLCC","description":"It happened between Honda CRV and Lorry. 2 dead bodies found, 5 serious injured." ,"address":"Kuala Lumpur Convention Center","latitude":3.075213,"longitude":101.6469241,"media":"....base64...."}'
+  ENDPOINT
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+    "status": true,
+    "message": "Report successfully created",
+    "reports": {
+        "title": "Accident happened at KLCC",
+        "description": "It happened between Honda CRV and Lorry. 2 dead bodies found, 5 serious injured.",
+        "address": "Kuala Lumpur Convention Center",
+        "latitude": 3.075213,
+        "longitude": 101.6469241,
+        "media": {
+            "image": [
+                {
+                    "url": "http://.../image1.jpg"
+                },
+                {
+                    "url": "http://.../image2.jpg"
+                },
+                {
+                    "url": "http://.../image3.jpg"
+                }
+            ],
+            "video": {
+                "url": "http://.../video.mp4"
+            },
+            "audio": {
+                "url": "http://.../audio.mp3"
+            }
+        }
+    }
+}
+```
+
+This endpoint to create new vehicle
+
+### HTTP Request
+
+`POST /users/<id>/report`
+
+<!-- PRU -->
+
+# Election
+
+## Get all voting post
+
+```shell
+curl
+  -H "Authorization: Bearer <token>"
+  -H "Content-Type: application/json"
+  -X GET
+  ENDPOINT
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+    "status": true,
+    "message": "Votes successfully updated",
+    "posts": [
+        {
+            "id": 1,
+            "parliament": "Kuala Lumpur",
+            "post": "Pantai Dalam",
+            "parties": [
+                {
+                    "id": 1,
+                    "name": "UMNO",
+                    "vote": 100
+                },
+                {
+                    "id": 2,
+                    "name": "PAS",
+                    "vote": 100
+                },
+                {
+                    "id": 3,
+                    "name": "PKR",
+                    "vote": 100
+                },
+                {
+                    "id": 4,
+                    "name": "AMANAH",
+                    "vote": 100
+                },
+                {
+                    "id": 5,
+                    "name": "DAP",
+                    "vote": 100
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "parliament": "Kuala Lumpur",
+            "post": "Setiawangsa",
+            "parties": [
+                {
+                    "id": 1,
+                    "name": "UMNO",
+                    "vote": 100
+                },
+                {
+                    "id": 2,
+                    "name": "PAS",
+                    "vote": 100
+                }
+            ]
+        }
+    ]
+}
+```
+
+This endpoint to sign up new user via email.
+
+### HTTP Request
+
+`GET /votes`
+
+## Update votes
+
+```shell
+curl
+  -H "Authorization: Bearer <token>"
+  -H "Content-Type: application/json"
+  -X POST
+  -d '{"id":1, "parties":[{"id":1,"votes":100},{"id":2,"votes":100}]}'
+  ENDPOINT
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+    "status": true,
+    "message": "Votes successfully updated",
+    "posts": [
+        {
+            "id": 1,
+            "parliament": "Kuala Lumpur",
+            "post": "Pantai Dalam",
+            "parties": [
+                {
+                    "id": 1,
+                    "name": "UMNO",
+                    "vote": 100
+                },
+                {
+                    "id": 2,
+                    "name": "PAS",
+                    "vote": 100
+                },
+                {
+                    "id": 3,
+                    "name": "PKR",
+                    "vote": 100
+                },
+                {
+                    "id": 4,
+                    "name": "AMANAH",
+                    "vote": 100
+                },
+                {
+                    "id": 5,
+                    "name": "DAP",
+                    "vote": 100
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "parliament": "Kuala Lumpur",
+            "post": "Setiawangsa",
+            "parties": [
+                {
+                    "id": 1,
+                    "name": "UMNO",
+                    "vote": 100
+                },
+                {
+                    "id": 2,
+                    "name": "PAS",
+                    "vote": 100
+                }
+            ]
+        }
+    ]
+}
+```
+
+This endpoint to create new vehicle
+
+### HTTP Request
+
+`POST /users/<id>/report`
