@@ -24,55 +24,13 @@ The API can be access via:
 
 # Authentication
 
-## Register via Email
-
-```shell
-curl
-  -H "Content-Type: application/json"
-  -X POST
-  -d '{"email", "nik@eagle.com", "password": "12345678"}'
-  ENDPOINT
-```
-
-> The above command returns JSON structured like this:
-
-```json
-{
-  "status": true,
-  "message": "You have successfully registered.",
-  "auth_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9",
-  "user": {
-    "id": 17,
-    "email": "nik@eagle.com",
-    "created_at": "2017-01-08T11:19:42.776+08:00",
-    "updated_at": "2017-01-08T11:19:42.790+08:00",
-    "is_admin": false,
-    "is_super_admin": false,
-    "pass_code": "1234"
-  }
-}
-```
-
-This endpoint to sign up new user via email.
-
-### HTTP Request
-
-`POST /signup`
-
-### Data Parameters
-
-Parameter | Description
---------- | ------- | -----------
-email | User email.
-password | User password. Minimum length is 8 characters.
-
 ## Login via Email
 
 ```shell
 curl
   -H "Content-Type: application/json"
   -X POST
-  -d '{"email": "nik@eagle.com", "password": "12345678"}'
+  -d '{"email": "nik@eagle.com", "password": "12345678", "latitude": 3.075213, "longitude": 101.6469241}'
   ENDPOINT
 ```
 
@@ -86,6 +44,9 @@ curl
   "user": {
     "id": 17,
     "email": "nik@eagle.com",
+    "latitude": 3.075213,
+    "longitude": 101.6469241,
+    "state": "Kuala Lumpur",
     "created_at": "2017-01-08T11:19:42.776+08:00",
     "updated_at": "2017-01-08T11:19:42.790+08:00",
     "is_admin": false,
@@ -160,26 +121,48 @@ curl
 {
     "status": true,
     "message": "Survey successfully retrieved",
-    "surveys": {
-        "id": 1,
-        "questionnaire": [
-            {
-                "id": 1,
-                "question": "This is the first question statement",
-                "type": 1
-            },
-            {
-                "id": 2,
-                "question": "This is the second question statement",
-                "type": 2
-            },
-            {
-                "id": 3,
-                "question": "This is the third question statement",
-                "type": 3
-            }
-        ]
-    }
+    "surveys": [
+        {
+            "id": 1,
+            "questionnaire": [
+                {
+                    "id": 1,
+                    "question": "This is the first question statement",
+                    "type": 1
+                },
+                {
+                    "id": 2,
+                    "question": "This is the second question statement",
+                    "type": 2
+                },
+                {
+                    "id": 3,
+                    "question": "This is the third question statement",
+                    "type": 3
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "questionnaire": [
+                {
+                    "id": 1,
+                    "question": "This is the first question statement",
+                    "type": 1
+                },
+                {
+                    "id": 2,
+                    "question": "This is the second question statement",
+                    "type": 2
+                },
+                {
+                    "id": 3,
+                    "question": "This is the third question statement",
+                    "type": 3
+                }
+            ]
+        }
+    ]
 }
 ```
 
